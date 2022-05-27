@@ -1,3 +1,5 @@
+---
+
 storage:
     - directory: "dir2"
       url: "https://github.com/author/repo/dir2"
