@@ -6,7 +6,7 @@ WORKDIR $GOPATH/src/github.com/sanix-darker/
 COPY main.go app/main.go
 COPY go.mod app/go.mod
 
-RUN apk add git-lfs
+RUN apk add git-lfs 
 
 WORKDIR $GOPATH/src/github.com/sanix-darker/app
 
@@ -24,5 +24,5 @@ COPY --from=builder /usr/bin/git-lfs /git-lfs
 
 EXPOSE 3000
 
-# Run the hello binary.
+# Run the binary.
 ENTRYPOINT ["/sglfs"]
