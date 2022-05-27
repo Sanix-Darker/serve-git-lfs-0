@@ -24,5 +24,5 @@ COPY --from=builder /usr/bin/git-lfs /git-lfs
 
 EXPOSE 3000
 
-# Run the hello binary.
+# Run the binary.
 ENTRYPOINT ["/sglfs"]
