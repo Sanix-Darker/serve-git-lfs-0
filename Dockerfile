@@ -5,6 +5,7 @@ WORKDIR $GOPATH/src/github.com/sanix-darker/
 # We only copy our app
 COPY main.go app/main.go
 COPY go.mod app/go.mod
+COPY go.sum app/go.sum
 
 RUN apk add git-lfs
 
@@ -16,13 +17,20 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/sglfs
 ####################################################################
 
 # Let's build our small image
-FROM scratch as prod
+FROM alpine:3.15 as prod
 
 # Copy our static executable.
-COPY --from=builder /go/bin/sglfs /sglfs
-COPY --from=builder /usr/bin/git-lfs /git-lfs
+COPY --from=builder /go/bin/sglfs /bin/sglfs
+COPY --from=builder /usr/bin/git-lfs /bin/git-lfs
+
+RUN apk add git
+
+ENV PATH="/bin:$PATH"
+
+RUN git config --global user.name "sglfs" &&\
+    git config --global user.email sglfs@osscameroon.com
 
 EXPOSE 3000
 
 # Run the binary.
-ENTRYPOINT ["/sglfs"]
+CMD ["/bin/sglfs"]
